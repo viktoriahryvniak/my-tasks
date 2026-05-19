@@ -5,6 +5,7 @@ document.body.addEventListener("htmx:afterSwap", () => {
   const taskInput = document.querySelector(".task-input__field");
   const tasksList = document.querySelector(".tasks__list");
 
+  const mainTitle = document.querySelector(".main__title");
   const progressTitle = document.querySelector(".progress__title");
   const progressLine = document.querySelector(".progress__line");
 
@@ -17,7 +18,29 @@ document.body.addEventListener("htmx:afterSwap", () => {
   const addListButton = document.querySelector(".sidebar__add-button");
   const sidebarList = document.querySelector(".sidebar__list");
 
+  const listModal = document.querySelector("#listModal");
+  const listNameInput = document.querySelector("#listNameInput");
+  const closeListModal = document.querySelector("#closeListModal");
+  const createListButton = document.querySelector("#createListButton");
+
+  const predictionSection = document.querySelector(".prediction");
+  const predictionButton = document.querySelector(".prediction__button");
+  const predictionCard = document.querySelector(".prediction__card");
+  const predictionText = document.querySelector(".prediction__text");
+
+  const defaultCategories = ["today", "study", "work", "personal", "shopping"];
+
   let currentCategory = "today";
+
+  const predictions = [
+    "✨ Сьогодні ти зробила більше, ніж думаєш.",
+    "🌸 Попереду на тебе чекає приємна новина.",
+    "🚀 Ти рухаєшся у правильному напрямку.",
+    "💫 Скоро відкриється нова можливість.",
+    "🌷 Твоя наполегливість скоро дасть результат.",
+    "☀️ День завершується дуже продуктивно для тебе.",
+    "🪄 Сьогоднішні маленькі кроки змінюють майбутнє.",
+  ];
 
   function getSidebarLinks() {
     return document.querySelectorAll(".sidebar__link");
@@ -68,6 +91,8 @@ document.body.addEventListener("htmx:afterSwap", () => {
         <span class="sidebar__link-icon">📌</span>
         <span class="sidebar__link-text">${categoryName}</span>
         <span class="sidebar__link-count">0</span>
+
+        <button class="sidebar__delete-list" type="button">×</button>
       </a>
     `;
 
@@ -84,9 +109,13 @@ document.body.addEventListener("htmx:afterSwap", () => {
     );
 
     if (visibleCheckboxes.length === 0) {
-      emptyMessage.style.display = "block";
+      emptyMessage.style.display = "flex";
       progressTitle.textContent = "0 / 0 Completed";
       progressLine.style.width = "0%";
+
+      predictionSection.classList.remove("prediction--visible");
+      predictionCard.classList.remove("prediction__card--visible");
+
       return;
     }
 
@@ -99,6 +128,13 @@ document.body.addEventListener("htmx:afterSwap", () => {
       completedCheckboxes.length + " / " + visibleCheckboxes.length + " Completed";
 
     progressLine.style.width = progressPercent + "%";
+
+    if (completedCheckboxes.length === visibleCheckboxes.length) {
+      predictionSection.classList.add("prediction--visible");
+    } else {
+      predictionSection.classList.remove("prediction--visible");
+      predictionCard.classList.remove("prediction__card--visible");
+    }
   }
 
   function showCurrentCategoryTasks() {
@@ -127,7 +163,6 @@ document.body.addEventListener("htmx:afterSwap", () => {
 
   function saveTasks() {
     const tasks = document.querySelectorAll(".tasks__item");
-
     const tasksArray = [];
 
     tasks.forEach((task) => {
@@ -149,13 +184,14 @@ document.body.addEventListener("htmx:afterSwap", () => {
 
     getSidebarLinks().forEach((link) => {
       const category = link.dataset.category;
-      const text = link.querySelector(".sidebar__link-text").textContent;
-      const icon = link.querySelector(".sidebar__link-icon").textContent;
+
+      if (defaultCategories.includes(category)) {
+        return;
+      }
 
       listsArray.push({
         category,
-        text,
-        icon,
+        text: link.querySelector(".sidebar__link-text").textContent,
       });
     });
 
@@ -190,13 +226,7 @@ document.body.addEventListener("htmx:afterSwap", () => {
       return;
     }
 
-    const defaultCategories = ["today", "study", "work", "personal", "shopping"];
-
     savedLists.forEach((list) => {
-      if (defaultCategories.includes(list.category)) {
-        return;
-      }
-
       const listItem = createSidebarListElement(list.text, list.category);
 
       sidebarList.append(listItem);
@@ -210,7 +240,6 @@ document.body.addEventListener("htmx:afterSwap", () => {
 
     tasks.forEach((task) => {
       const isCompleted = task.querySelector(".tasks__checkbox").checked;
-
       const isFavorite = task
         .querySelector(".tasks__favorite")
         .classList.contains("tasks__favorite--active");
@@ -301,6 +330,48 @@ document.body.addEventListener("htmx:afterSwap", () => {
   });
 
   sidebarList.addEventListener("click", (event) => {
+    const deleteButton = event.target.closest(".sidebar__delete-list");
+
+    if (deleteButton) {
+      event.preventDefault();
+
+      const link = deleteButton.closest(".sidebar__link");
+      const category = link.dataset.category;
+
+      const tasksInCategory = document.querySelectorAll(
+        `.tasks__item[data-category="${category}"]`
+      );
+
+      tasksInCategory.forEach((task) => {
+        task.remove();
+      });
+
+      link.closest(".sidebar__item").remove();
+
+      if (currentCategory === category) {
+        currentCategory = "today";
+
+        const todayLink = document.querySelector(
+          '.sidebar__link[data-category="today"]'
+        );
+
+        getSidebarLinks().forEach((sidebarLink) => {
+          sidebarLink.classList.remove("sidebar__link--active");
+        });
+
+        todayLink.classList.add("sidebar__link--active");
+        mainTitle.textContent =
+          todayLink.querySelector(".sidebar__link-text").textContent;
+      }
+
+      showCurrentCategoryTasks();
+      updateSidebarCounters();
+      saveTasks();
+      saveLists();
+
+      return;
+    }
+
     const link = event.target.closest(".sidebar__link");
 
     if (!link) {
@@ -316,18 +387,29 @@ document.body.addEventListener("htmx:afterSwap", () => {
     link.classList.add("sidebar__link--active");
 
     currentCategory = link.dataset.category;
+    mainTitle.textContent = link.querySelector(".sidebar__link-text").textContent;
 
     showCurrentCategoryTasks();
   });
 
   addListButton.addEventListener("click", () => {
-    const listName = prompt("Введи назву нового списку:");
+    listModal.classList.add("modal--open");
+    listNameInput.focus();
+  });
+
+  closeListModal.addEventListener("click", () => {
+    listModal.classList.remove("modal--open");
+    listNameInput.value = "";
+  });
+
+  createListButton.addEventListener("click", () => {
+    const listName = listNameInput.value.trim();
 
     if (!listName) {
       return;
     }
 
-    const categoryId = listName.toLowerCase().trim().replaceAll(" ", "-");
+    const categoryId = listName.toLowerCase().replaceAll(" ", "-");
 
     const listItem = createSidebarListElement(listName, categoryId);
 
@@ -335,6 +417,17 @@ document.body.addEventListener("htmx:afterSwap", () => {
 
     saveLists();
     updateSidebarCounters();
+
+    listModal.classList.remove("modal--open");
+    listNameInput.value = "";
+  });
+
+  predictionButton.addEventListener("click", () => {
+    const randomIndex = Math.floor(Math.random() * predictions.length);
+
+    predictionText.textContent = predictions[randomIndex];
+
+    predictionCard.classList.add("prediction__card--visible");
   });
 
   loadLists();
