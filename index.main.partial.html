@@ -2,87 +2,81 @@
   <header class="main__header">
     <div class="main__title-wrapper">
       <h2 class="main__title">Сьогодні</h2>
-      <span class="main__icon">☀️</span>
+
+      <span class="main__icon">✨</span>
     </div>
 
     <div class="main__actions">
-      <button class="main__icon-button">🔍</button>
-      <button class="main__icon-button">🎛️</button>
-      <button class="main__icon-button">🗑️</button>
+      <button class="main__icon-button main__filter-button" type="button">
+        <i data-lucide="sliders-horizontal"></i>
+      </button>
     </div>
   </header>
-<section class="task-input">
-  <form class="task-input__form">
-    <input
-      type="text"
-      class="task-input__field"
-      placeholder="Додати нову справу..."
-    />
 
-    <button class="task-input__button">+ Додати</button>
-  </form>
-</section>
-<section class="tasks">
-  <ul class="tasks__list">
-    <li class="tasks__item">
-      <label class="tasks__label">
-        <input type="checkbox" class="tasks__checkbox" />
-        <span class="tasks__text">Прокинутись о 7:00</span>
-      </label>
+  <section class="task-input">
+    <form class="task-input__form">
+      <input
+        type="text"
+        class="task-input__field"
+        placeholder="Додати нову справу..."
+      />
 
-      <span class="tasks__time">⏰ 07:00</span>
-      <button class="tasks__favorite">☆</button>
-    </li>
+      <button class="task-input__button">+ Додати</button>
+    </form>
+  </section>
 
-    <li class="tasks__item">
-      <label class="tasks__label">
-        <input type="checkbox" class="tasks__checkbox" checked />
-        <span class="tasks__text">Пробіжка 30 хвилин 🏃</span>
-      </label>
+  <section class="filters">
+    <button class="filters__button filters__button--active" data-filter="all">
+      All
+    </button>
 
-      <button class="tasks__favorite">★</button>
-    </li>
+    <button class="filters__button" data-filter="active">Active</button>
 
-    <li class="tasks__item">
-      <label class="tasks__label">
-        <input type="checkbox" class="tasks__checkbox" />
-        <span class="tasks__text">Сніданок та планування дня 🧾</span>
-      </label>
+    <button class="filters__button" data-filter="completed">Completed</button>
 
-      <button class="tasks__favorite">☆</button>
-    </li>
-  </ul>
-</section>
-<section class="progress">
-  <div class="progress__card">
-    <div class="progress__top">
-      <p class="progress__label">Daily Progress</p>
+    <button class="filters__button" data-filter="important">Important</button>
+  </section>
 
-      <span class="progress__emoji"> 🚀 </span>
+  <section class="tasks">
+    <ul class="tasks__list"></ul>
+    <p class="tasks__empty">✨ Немає задач. Додай свою першу ціль!</p>
+  </section>
+
+  <section class="progress">
+    <div class="progress__card">
+      <div class="progress__top">
+        <p class="progress__label">Daily Progress</p>
+
+        <span class="progress__emoji"> 🚀 </span>
+      </div>
+
+      <h3 class="progress__title">0 / 0 Completed</h3>
+
+      <p class="progress__text">
+        Ти вже чудово рухаєшся до своїх цілей сьогодні.
+      </p>
+
+      <div class="progress__bar">
+        <div class="progress__line"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="summary">
+    <div class="summary__card">
+      <p class="summary__label">Сьогодні</p>
+
+      <h3 class="summary__title">5 задач</h3>
+
+      <p class="summary__text">3 виконано, 2 залишилось</p>
     </div>
 
-    <h3 class="progress__title">65% Completed</h3>
+    <div class="summary__card">
+      <p class="summary__label">Фокус</p>
 
-    <p class="progress__text">
-      Ти вже чудово рухаєшся до своїх цілей сьогодні.
-    </p>
+      <h3 class="summary__title">Навчання</h3>
 
-    <div class="progress__bar">
-      <div class="progress__line"></div>
+      <p class="summary__text">Головна ціль дня</p>
     </div>
-  </div>
-</section>
-<section class="summary">
-  <div class="summary__card">
-    <p class="summary__label">Сьогодні</p>
-    <h3 class="summary__title">5 задач</h3>
-    <p class="summary__text">3 виконано, 2 залишилось</p>
-  </div>
-
-  <div class="summary__card">
-    <p class="summary__label">Фокус</p>
-    <h3 class="summary__title">Навчання</h3>
-    <p class="summary__text">Головна ціль дня</p>
-  </div>
-</section>
+  </section>
 </main>

@@ -1,0 +1,68 @@
+:root {
+  --bg-color: #f5f7ff;
+  --white: #ffffff;
+  --primary: #7b61ff;
+  --primary-light: #a78bfa;
+  --text-dark: #1e1e2f;
+  --text-light: #8b8ba7;
+  --border-color: #ececff;
+  --gradient-pink: #ffb5ea;
+  --gradient-yellow: #f9fab4;
+  --progress-purple: #9b8cff;
+  --progress-pink: #ff8ad8;
+  --progress-violet: #c084fc;
+  --favorite-color: #ffb800;
+  --delete-hover-bg: #ffe4ec;
+  --delete-hover-color: #ff4f8b;
+  --task-time-bg: #f3f0ff;
+  --glass-white: rgba(255, 255, 255, 0.72);
+  --glass-white-light: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --shadow-primary: rgba(123, 97, 255, 0.08);
+  --shadow-strong: rgba(123, 97, 255, 0.24);
+  --active-gradient-start: rgba(167, 139, 250, 0.22);
+  --active-gradient-end: rgba(255, 182, 193, 0.18);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(
+    135deg,
+    var(--primary-light),
+    var(--gradient-pink),
+    var(--gradient-yellow),
+    var(--bg-color)
+  );
+  padding: 30px;
+  color: var(--text-dark);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+  gap: 24px;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  background: var(--glass-white-light);
+  backdrop-filter: blur(20px);
+  border-radius: 36px;
+  box-shadow: 0 10px 40px var(--shadow-primary);
+}

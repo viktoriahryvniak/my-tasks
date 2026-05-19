@@ -4,21 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MyTasks</title>
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/index.css" />
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
     <div class="app">
-    <div
-      data-hx-trigger="load"
-      data-hx-swap="outerHTML"
-      data-hx-get="index.sidebar.partial.html"
+      <div
+        data-hx-trigger="load"
+        data-hx-swap="outerHTML"
+        data-hx-get="index.sidebar.partial.html"
       ></div>
       <div
-      data-hx-trigger="load"
-      data-hx-swap="outerHTML"
-      data-hx-get="index.main.partial.html"
+        data-hx-trigger="load"
+        data-hx-swap="outerHTML"
+        data-hx-get="index.main.partial.html"
       ></div>
     </div>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+    <script src="./js/main.js"></script>
   </body>
 </html>
