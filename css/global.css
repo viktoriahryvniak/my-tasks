@@ -26,6 +26,14 @@
   --modal-shadow: rgba(0, 0, 0, 0.18);
   --input-focus-ring: rgba(167, 139, 250, 0.15);
   --glass-white-strong: rgba(255, 255, 255, 0.8);
+
+  --primary-bg: linear-gradient(
+    135deg,
+    var(--primary-light),
+    var(--gradient-pink),
+    var(--gradient-yellow),
+    var(--bg-color)
+  );
 }
 
 * {
@@ -36,15 +44,13 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: linear-gradient(
-    135deg,
-    var(--primary-light),
-    var(--gradient-pink),
-    var(--gradient-yellow),
-    var(--bg-color)
-  );
+  background: var(--primary-bg);
   padding: 30px;
   color: var(--text-dark);
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 .container {
@@ -69,4 +75,26 @@ body {
   backdrop-filter: blur(20px);
   border-radius: 36px;
   box-shadow: 0 10px 40px var(--shadow-primary);
+}
+body.dark-theme {
+  --primary-bg: #16161f;
+
+  --text-dark: #f5f5f7;
+  --text-light: #a1a1b5;
+
+  --glass-white: rgba(32, 32, 44, 0.82);
+
+  --glass-white-light: rgba(25, 25, 36, 0.72);
+
+  --glass-white-strong: rgba(38, 38, 52, 0.92);
+
+  --glass-border: rgba(255, 255, 255, 0.08);
+
+  --border-color: rgba(255, 255, 255, 0.1);
+
+  --task-time-bg: rgba(139, 92, 246, 0.16);
+
+  --shadow-primary: rgba(0, 0, 0, 0.35);
+
+  --modal-overlay: rgba(0, 0, 0, 0.6);
 }
