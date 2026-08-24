@@ -8,7 +8,7 @@ https://viktoriahryvniak.github.io/my-tasks/
 
 ## Features
 
-- Create, edit, and delete tasks
+- Create, delete tasks
 - Save tasks in LocalStorage
 - Responsive layout
 - Dark mode
